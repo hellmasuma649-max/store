@@ -7,7 +7,7 @@ import { products } from './data/products.js'
 import { filterProducts, sortProducts } from './lib/catalog.js'
 import { addToCart, getCartCount, updateCartQuantity } from './lib/cart.js'
 
-const categories = ['All items', 'Apparel', 'T-Shirts', 'Shirts', 'Pants', 'Jackets', 'Shoes', 'Caps', 'Watches', 'Accessories']
+const categories = ['All items', 'Apparel', 'T-Shirts', 'Shirts', 'Pants', 'Jackets', 'Shoes', 'Caps', 'Watches', 'Accessories', 'Perfumes']
 const sortOptions = [
   { value: 'featured', label: 'Featured' },
   { value: 'price-asc', label: 'Price: low to high' },

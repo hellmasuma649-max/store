@@ -70,4 +70,12 @@ describe('cart operations', () => {
   it('ignores stale product IDs when calculating subtotal', () => {
     expect(getCartTotal([{ productId: 'removed', quantity: 2 }], [mug])).toBe(0)
   })
+
+  it('handles missing cart and product payloads defensively', () => {
+    expect(addToCart(undefined, mug, 1)).toEqual([{ productId: 'mug', quantity: 1 }])
+    expect(updateCartQuantity(undefined, mug, 2)).toEqual([])
+    expect(getCartCount(undefined)).toBe(0)
+    expect(getCartTotal(undefined, [mug])).toBe(0)
+    expect(addToCart([{ productId: 'mug', quantity: 1 }], { ...mug, stock: 0 }, 1)).toEqual([])
+  })
 })

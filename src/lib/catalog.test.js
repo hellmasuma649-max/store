@@ -47,6 +47,11 @@ describe('filterProducts', () => {
     expect(filterProducts(sampleProducts, { query: 'not here' })).toEqual([])
   })
 
+  it('handles missing data and null category filters without crashing', () => {
+    expect(filterProducts(undefined, { category: null, query: '  ' })).toEqual([])
+    expect(filterProducts(sampleProducts, { category: null, query: 'home' })).toHaveLength(2)
+  })
+
   it('returns apparel products from the catalog category', () => {
     const apparelProducts = filterProducts(products, { category: 'Apparel' })
     expect(apparelProducts.map((product) => product.id)).toEqual([
@@ -122,6 +127,15 @@ describe('filterProducts', () => {
     expect(accessoryProducts.map((product) => product.id)).toEqual([
       'classic-leather-belt',
       'sun-glass-sunglasses',
+    ])
+  })
+
+  it('returns perfume products from the perfumes category', () => {
+    const perfumeProducts = filterProducts(products, { category: 'Perfumes' })
+    expect(perfumeProducts.map((product) => product.id)).toEqual([
+      'wildwood-eau-de-parfum',
+      'citrus-grove-eau-de-toilette',
+      'soft-rose-perfume',
     ])
   })
 

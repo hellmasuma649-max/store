@@ -1,14 +1,20 @@
-export function filterProducts(products, filters = {}) {
+export function filterProducts(products = [], filters = {}) {
   const {
     query = '',
     category = 'All items',
     minPrice = 0,
     maxPrice = Infinity,
     inStockOnly = false,
-  } = filters
-  const normalizedQuery = query.trim().toLowerCase()
+  } = filters ?? {}
 
-  return products.filter((product) => {
+  const normalizedQuery = String(query ?? '').trim().toLowerCase()
+  const normalizedCategory = category ?? 'All items'
+  const safeMinPrice = Number.isFinite(Number(minPrice)) ? Number(minPrice) : 0
+  const safeMaxPrice = Number.isFinite(Number(maxPrice)) ? Number(maxPrice) : Infinity
+
+  return (Array.isArray(products) ? products : []).filter((product) => {
+    if (!product) return false
+
     const searchableText = [
       product.name,
       product.category,
@@ -18,16 +24,16 @@ export function filterProducts(products, filters = {}) {
 
     return (
       (!normalizedQuery || searchableText.includes(normalizedQuery)) &&
-      (category === 'All items' || product.category === category) &&
-      product.price >= minPrice &&
-      product.price <= maxPrice &&
-      (!inStockOnly || product.stock > 0)
+      (normalizedCategory === 'All items' || product.category === normalizedCategory) &&
+      Number(product.price) >= safeMinPrice &&
+      Number(product.price) <= safeMaxPrice &&
+      (!inStockOnly || Number(product.stock) > 0)
     )
   })
 }
 
-export function sortProducts(products, sortBy = 'featured') {
-  const sorted = [...products]
+export function sortProducts(products = [], sortBy = 'featured') {
+  const sorted = Array.isArray(products) ? [...products] : []
 
   switch (sortBy) {
     case 'price-asc':
